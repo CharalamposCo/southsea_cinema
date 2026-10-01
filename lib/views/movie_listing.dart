@@ -15,7 +15,34 @@ class MovieListing extends StatelessWidget {
         elevation: 0,
       ),
       drawer: const NavDrawer(),
-      body: const SizedBox.shrink(),
+      body: Container(
+        padding: const EdgeInsets.all(24),
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'DRACULA (1931) (PG)',
+              style: TextStyle(
+                fontSize: 32,
+              ),
+            ),
+
+            SizedBox(height: 40),
+
+            Text(
+              'Dracula is a classic 1931 horror film about Count Dracula, '
+              'a mysterious vampire who moves to England and terrorises '
+              'those around him.',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+      ),
+
     );
+
   }
+
 }
