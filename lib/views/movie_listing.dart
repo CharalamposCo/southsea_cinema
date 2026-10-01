@@ -20,29 +20,39 @@ class MovieListing extends StatelessWidget {
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'DRACULA (1931) (PG)',
-              style: TextStyle(
-                fontSize: 32,
-              ),
+            Row(
+              children: [
+                Text(
+                  'DRACULA (1931) (PG)',
+                  style: TextStyle(
+                    fontSize: 32,
+                  ),
+                ),
+              ],
             ),
 
             SizedBox(height: 40),
 
-            Text(
-              'Dracula is a classic 1931 horror film about Count Dracula, '
-              'a mysterious vampire who moves to England and terrorises '
-              'those around him.',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Dracula is a classic 1931 horror film about Count Dracula, '
+                    'a mysterious vampire who moves to England and terrorises '
+                    'those around him.',
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
             ),
+
+            SizedBox(height: 40),
+
           ],
         ),
       ),
-
     );
-
   }
-
 }
