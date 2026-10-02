@@ -33,7 +33,9 @@ class MovieListing extends StatefulWidget {
                 Text(
                   'DRACULA (1931) (PG)',
                   style: TextStyle(
+                    color: cinemaFontWhite,
                     fontSize: 32,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
@@ -106,6 +108,7 @@ class MovieListing extends StatefulWidget {
               }
             },
             dropdownMenuEntries: const [
+              DropdownMenuEntry(value: 0, label: '0'),
               DropdownMenuEntry(value: 1, label: '1'),
               DropdownMenuEntry(value: 2, label: '2'),
               DropdownMenuEntry(value: 3, label: '3'),
