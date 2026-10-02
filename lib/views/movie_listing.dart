@@ -49,6 +49,7 @@ class MovieListing extends StatefulWidget {
                   child: Text(
                     'Southsea Cinema Room ',
                     style: TextStyle(
+                      color: cinemaFontWhite,
                       fontSize: 18,
                     ),
                   ),
@@ -61,6 +62,7 @@ class MovieListing extends StatefulWidget {
             const Text(
               'Thursday 22 Oct 2026, 18:00 - ends at 19:14',
               style: TextStyle(
+                color: cinemaFontWhite,
                 fontSize: 16,
               ),
             ),
@@ -71,7 +73,7 @@ class MovieListing extends StatefulWidget {
               'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets',
               style: TextStyle(
                 fontSize: 16,
-                fontStyle: FontStyle.italic,
+                color: cinemaFontWhite,
               ),
             ),
 
@@ -80,6 +82,7 @@ class MovieListing extends StatefulWidget {
             const Text(
               'Select Quantities (Up to 5 in total)',
               style: TextStyle(
+                color: cinemaFontWhite,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
@@ -90,8 +93,8 @@ class MovieListing extends StatefulWidget {
             const Text(
               'Tickets',
               style: TextStyle(
+                color: cinemaFontWhite,
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
               ),
             ),
 
