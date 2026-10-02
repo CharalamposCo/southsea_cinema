@@ -56,7 +56,7 @@ class MovieListing extends StatefulWidget {
               ],
             ),
 
-            SizedBox(height: 40),
+            SizedBox(height: 20),
 
             DropdownMenu<int>(
                initialSelection: 1,
@@ -73,8 +73,24 @@ class MovieListing extends StatefulWidget {
               DropdownMenuEntry(value: 3, label: '3'),
               DropdownMenuEntry(value: 4, label: '4'),
               DropdownMenuEntry(value: 5, label: '5'),
-            ],
-            )
+             ]),
+
+             const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(
+                    content: Text(
+                      '$_ticketQuantity ticket(s) added to order',
+                   ),
+                 ),
+               );
+             },
+              child: const Text('Add to order'),
+            ),
+            
+            
           ],
         ),
       ),
