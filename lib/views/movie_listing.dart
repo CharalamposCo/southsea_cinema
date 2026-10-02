@@ -10,7 +10,7 @@ class MovieListing extends StatefulWidget {
    }
    
  class _MovieListingState extends State<MovieListing> {
-   int _ticketQuantity = 1;
+   int _ticketQuantity = 0;
  
 
   @override
@@ -45,9 +45,7 @@ class MovieListing extends StatefulWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'Dracula is a classic 1931 horror film about Count Dracula, '
-                    'a mysterious vampire who moves to England and terrorises '
-                    'those around him.',
+                    'Southsea Cinema Room ',
                     style: TextStyle(
                       fontSize: 18,
                     ),
@@ -56,10 +54,50 @@ class MovieListing extends StatefulWidget {
               ],
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 6),
+
+            const Text(
+              'Thursday 22 Oct 2026, 18:00 - ends at 19:14',
+              style: TextStyle(
+                fontSize: 16,
+              ),
+            ),
+
+            const SizedBox(height: 60),
+
+            const Text(
+              'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets',
+              style: TextStyle(
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            const Text(
+              'Select Quantities (Up to 5 in total)',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            const Text(
+              'Tickets',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+
+            SizedBox(height: 100),
 
             DropdownMenu<int>(
-               initialSelection: 1,
+               initialSelection: 0,
+               label: const Text('Adult (£7.50)'),
                onSelected: (int? value) {
                if (value != null) {
                  setState(() {
