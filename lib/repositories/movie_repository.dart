@@ -10,7 +10,8 @@ class MovieRepository {
             'a mysterious vampire who moves to England and terrorises those around him.',
         rating: 'PG',
         imagePath: 'assets/images/dracula.jpg',
-        screeningTime: '18:00'
+        screeningTime: '18:00',
+        price: 8.50,
       ),
       const Movie(
         id: 'fast-and-furious-6',
@@ -20,7 +21,8 @@ class MovieRepository {
             'by helping take down a skilled criminal organisation.',
         rating: '12',
         imagePath: 'assets/images/fast6.jpg',
-        screeningTime: '20:00'
+        screeningTime: '20:00',
+        price: 10.00
       ),
     ];
   }

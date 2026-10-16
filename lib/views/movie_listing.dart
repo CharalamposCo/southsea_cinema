@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
+import 'package:southsea_cinema/models/movie.dart';
 
 class MovieListing extends StatefulWidget {
-  const MovieListing({super.key});
+  final Movie movie;
+  const MovieListing({super.key,required this.movie});
 
   @override 
   State<MovieListing> createState() => _MovieListingState();
@@ -102,7 +104,7 @@ class MovieListing extends StatefulWidget {
 
             DropdownMenu<int>(
                initialSelection: 0,
-               label: const Text('Adult (£7.50)'),
+               label: Text('Adult (${widget.movie.formattedPrice})'),
                onSelected: (int? value) {
                if (value != null) {
                  setState(() {

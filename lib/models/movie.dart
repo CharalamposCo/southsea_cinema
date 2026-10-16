@@ -5,6 +5,7 @@ class Movie {
   final String rating;
   final String imagePath;
   final String screeningTime;
+  final double price;
 
   const Movie({
     required this.id,
@@ -13,5 +14,7 @@ class Movie {
     required this.rating,
     required this.imagePath,
     required this.screeningTime,
+    required this.price,
   });
+  String get formattedPrice => '£${price.toStringAsFixed(2)}';
 }
