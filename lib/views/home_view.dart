@@ -21,32 +21,26 @@ class HomeView extends StatelessWidget {
         elevation: 0,
       ),
       drawer: const NavDrawer(),
-     
-body: ListView(
-  padding: const EdgeInsets.all(16),
-  children: [
-    const Text(
-      'Welcome to Southsea Cinema',
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: cinemaFontWhite,
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          const Text(
+            'Welcome to Southsea Cinema',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: cinemaFontWhite,
+            ),
+          ),
+          const SizedBox(height: 20),
+          ...movies.map(
+            (movie) => Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: MovieCard(movie: movie),
+            ),
+          ),
+        ],
       ),
-    ),
-
-    
-    const SizedBox(height: 20),
-
-   
-    ...movies.map(
-      (movie) => Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: MovieCard(movie: movie),
-      ),
-    ),
-  ],
-),
-
     );
   }
 }

@@ -5,15 +5,14 @@ import 'package:southsea_cinema/models/movie.dart';
 
 class MovieListing extends StatefulWidget {
   final Movie movie;
-  const MovieListing({super.key,required this.movie});
+  const MovieListing({super.key, required this.movie});
 
-  @override 
+  @override
   State<MovieListing> createState() => _MovieListingState();
-   }
-   
- class _MovieListingState extends State<MovieListing> {
-   int _ticketQuantity = 0;
- 
+}
+
+class _MovieListingState extends State<MovieListing> {
+  int _ticketQuantity = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +41,7 @@ class MovieListing extends StatefulWidget {
                 ),
               ],
             ),
-
             SizedBox(height: 40),
-
             Row(
               children: [
                 Expanded(
@@ -58,9 +55,7 @@ class MovieListing extends StatefulWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 6),
-
             const Text(
               'Thursday 22 Oct 2026, 18:00 - ends at 19:14',
               style: TextStyle(
@@ -68,9 +63,7 @@ class MovieListing extends StatefulWidget {
                 fontSize: 16,
               ),
             ),
-
             const SizedBox(height: 60),
-
             const Text(
               'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets',
               style: TextStyle(
@@ -78,9 +71,7 @@ class MovieListing extends StatefulWidget {
                 color: cinemaFontWhite,
               ),
             ),
-
             const SizedBox(height: 24),
-
             const Text(
               'Select Quantities (Up to 5 in total)',
               style: TextStyle(
@@ -89,9 +80,7 @@ class MovieListing extends StatefulWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 16),
-
             const Text(
               'Tickets',
               style: TextStyle(
@@ -99,44 +88,38 @@ class MovieListing extends StatefulWidget {
                 fontSize: 16,
               ),
             ),
-
             SizedBox(height: 100),
-
             DropdownMenu<int>(
-               initialSelection: 0,
-               label: Text('Adult (${widget.movie.formattedPrice})'),
-               onSelected: (int? value) {
-               if (value != null) {
-                 setState(() {
-                   _ticketQuantity = value;
-                });
-              }
-            },
-            dropdownMenuEntries: const [
-              DropdownMenuEntry(value: 0, label: '0'),
-              DropdownMenuEntry(value: 1, label: '1'),
-              DropdownMenuEntry(value: 2, label: '2'),
-              DropdownMenuEntry(value: 3, label: '3'),
-              DropdownMenuEntry(value: 4, label: '4'),
-              DropdownMenuEntry(value: 5, label: '5'),
-             ]),
-
-             const SizedBox(height: 20),
-
+                initialSelection: 0,
+                label: Text('Adult (${widget.movie.formattedPrice})'),
+                onSelected: (int? value) {
+                  if (value != null) {
+                    setState(() {
+                      _ticketQuantity = value;
+                    });
+                  }
+                },
+                dropdownMenuEntries: const [
+                  DropdownMenuEntry(value: 0, label: '0'),
+                  DropdownMenuEntry(value: 1, label: '1'),
+                  DropdownMenuEntry(value: 2, label: '2'),
+                  DropdownMenuEntry(value: 3, label: '3'),
+                  DropdownMenuEntry(value: 4, label: '4'),
+                  DropdownMenuEntry(value: 5, label: '5'),
+                ]),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(
+                  SnackBar(
                     content: Text(
                       '$_ticketQuantity ticket(s) added to order',
-                   ),
-                 ),
-               );
-             },
+                    ),
+                  ),
+                );
+              },
               child: const Text('Add to order'),
             ),
-            
-            
           ],
         ),
       ),
