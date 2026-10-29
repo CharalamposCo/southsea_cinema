@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/main.dart';
 import 'package:southsea_cinema/views/movie_listing.dart';
+import 'package:southsea_cinema/widgets/primary_button.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   testWidgets('Basic app loading test', (WidgetTester tester) async {
@@ -56,4 +58,33 @@ void main() {
       findsOneWidget,
     );
   });
+
+    testWidgets('PrimaryButton displays label and responds to taps',
+      (WidgetTester tester) async {
+    bool buttonPressed = false;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: PrimaryButton(
+            label: 'Test Button',
+            onPressed: () {
+              buttonPressed = true;
+            },
+          ),
+        ),
+      ),
+    );
+
+    // Check that the button label appears.
+    expect(find.text('Test Button'), findsOneWidget);
+
+    // Tap the button.
+    await tester.tap(find.text('Test Button'));
+    await tester.pump();
+
+    // Check that the callback runs.
+    expect(buttonPressed, isTrue);
+  });
+
 }

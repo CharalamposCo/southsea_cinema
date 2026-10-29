@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/widgets/primary_button.dart';
 
 class MovieListing extends StatefulWidget {
   final Movie movie;
@@ -105,17 +106,17 @@ class _MovieListingState extends State<MovieListing> {
                   DropdownMenuEntry(value: 5, label: '5'),
                 ]),
             const SizedBox(height: 20),
-            ElevatedButton(
+            PrimaryButton(
+              label: 'Add to order',
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(
-                      '$_ticketQuantity ticket(s) added to order',
-                    ),
-                  ),
-                );
-              },
-              child: const Text('Add to order'),
+                   content: Text(
+                    '$_ticketQuantity ticket(s) added to order',
+                   ),
+                 ),
+               );
+             },
             ),
           ],
         ),
