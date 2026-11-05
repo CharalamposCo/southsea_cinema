@@ -3,6 +3,7 @@ import 'package:southsea_cinema/main.dart';
 import 'package:southsea_cinema/views/movie_listing.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
+import 'package:southsea_cinema/views/settings_view.dart';
 
 void main() {
   testWidgets('Basic app loading test', (WidgetTester tester) async {
@@ -85,6 +86,100 @@ void main() {
 
     // Check that the callback runs.
     expect(buttonPressed, isTrue);
+  });
+
+    testWidgets('Settings page displays all profile fields',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
+
+    expect(find.text('My Settings'), findsOneWidget);
+    expect(find.text('Address'), findsOneWidget);
+    expect(find.text('Email Address'), findsOneWidget);
+    expect(find.text('Patron Number'), findsOneWidget);
+    expect(find.text('Preferences'), findsOneWidget);
+    expect(find.text('Receive news by email'), findsOneWidget);
+    expect(find.text('SAVE SETTINGS'), findsOneWidget);
+    expect(find.text('CANCEL'), findsOneWidget);
+  });
+
+  testWidgets('Address can be cleared',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pump();
+
+    expect(
+      tester.widget<TextFormField>(
+        find.byType(TextFormField).first,
+      ).controller!.text,
+      '',
+    );
+  });
+
+  testWidgets('Email preferences can be switched off',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
+
+    expect(tester.widget<Switch>(find.byType(Switch)).value, true);
+
+    await tester.tap(find.byType(Switch));
+    await tester.pump();
+
+    expect(tester.widget<Switch>(find.byType(Switch)).value, false);
+  });
+
+  testWidgets('Invalid email address shows validation error',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
+
+    await tester.enterText(
+      find.byType(TextFormField).at(1),
+      'invalid-email',
+    );
+
+    await tester.ensureVisible(find.text('SAVE SETTINGS'));
+    await tester.tap(find.text('SAVE SETTINGS'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Please enter a valid email address'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('Valid settings display success message',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
+
+    await tester.ensureVisible(find.text('SAVE SETTINGS'));
+    await tester.tap(find.text('SAVE SETTINGS'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Settings saved successfully'),
+      findsOneWidget,
+    );
   });
 
 }
