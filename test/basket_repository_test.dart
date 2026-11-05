@@ -27,6 +27,7 @@ void main() {
 
   setUp(() {
     basketRepository = BasketRepository();
+    basketRepository.clearBasket();
   });
 
   test('Add tickets to basket', () {

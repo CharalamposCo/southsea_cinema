@@ -2,6 +2,15 @@ import '../models/movie.dart';
 import '../models/basket_item.dart';
 
 class BasketRepository {
+  static final BasketRepository _instance =
+      BasketRepository._internal();
+
+  factory BasketRepository() {
+    return _instance;
+  }
+
+  BasketRepository._internal();
+
   final List<BasketItem> _items = [];
 
   List<BasketItem> getItems() {
