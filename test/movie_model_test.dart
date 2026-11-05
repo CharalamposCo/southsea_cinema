@@ -50,5 +50,46 @@ void main() {
 
       expect(movie.formattedPrice, '£7.50');
     });
+
+    test('fromJson and toJson convert all movie fields', () {
+      final Map<String, dynamic> json = {
+        'id': '1',
+        'title': 'Dracula (1931)',
+        'description': 'A classic horror film',
+        'rating': 'PG',
+        'imagePath': 'assets/images/dracula.jpg',
+        'screeningTime': '14:00',
+        'price': 10.50,
+      };
+
+      final Movie movie = Movie.fromJson(json);
+
+      expect(movie.id, '1');
+      expect(movie.title, 'Dracula (1931)');
+      expect(movie.description, 'A classic horror film');
+      expect(movie.rating, 'PG');
+      expect(movie.imagePath, 'assets/images/dracula.jpg');
+      expect(movie.screeningTime, '14:00');
+      expect(movie.price, 10.50);
+
+      expect(movie.toJson(), json);
+    });
+
+    test('fromJson converts whole-number prices to double', () {
+      final Map<String, dynamic> json = {
+        'id': '2',
+        'title': 'Fast & Furious 6',
+        'description': 'An action film',
+        'rating': '12',
+        'imagePath': 'assets/images/fast_and_furious_6.jpg',
+        'screeningTime': '19:00',
+        'price': 10,
+      };
+
+      final Movie movie = Movie.fromJson(json);
+
+      expect(movie.price, 10.0);
+      expect(movie.price, isA<double>());
+    });
   });
 }

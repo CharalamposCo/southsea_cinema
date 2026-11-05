@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/repositories/movie_repository.dart';
+import 'package:southsea_cinema/models/movie.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('MovieRepository tests', () {
     final repository = MovieRepository();
 
@@ -26,5 +28,26 @@ void main() {
 
       expect(movie, isNull);
     });
+
+    test('loadMoviesFromAsset reads the JSON movie catalogue', () async {
+
+      final MovieRepository repository = MovieRepository();
+
+      final List<Movie> movies =
+         await repository.loadMoviesFromAsset();
+
+      expect(movies.length, 2);
+
+      expect(movies[0].id, 'dracula-1931');
+      expect(movies[0].title, 'DRACULA (1931)');
+      expect(movies[0].price, 8.50);
+
+      expect(movies[1].id, 'fast-and-furious-6');
+      expect(movies[1].title, 'FAST & FURIOUS 6');
+      expect(movies[1].price, 10.00);
+
+      expect(repository.getMovies(), movies);
+  });
+
   });
 }
