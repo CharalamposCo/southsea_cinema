@@ -146,17 +146,17 @@ class _BasketViewState extends State<BasketView> {
                   PrimaryButton(
                     label: 'Checkout',
                     onPressed: () {
-                     setState(() {
-                      _basketRepository.clearBasket();
-                   });
+                      setState(() {
+                        _basketRepository.clearBasket();
+                      });
 
-                   ScaffoldMessenger.of(context).showSnackBar(
-                     const SnackBar(
-                       content: Text('Checkout completed successfully!'),
-                     ),
-                   );
-                  },
-                 ),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Checkout completed successfully!'),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
       ),

@@ -28,6 +28,8 @@ class _HomeViewState extends State<HomeView> {
     try {
       final MovieRepository repository = MovieRepository();
 
+      // Temporary delay to make the loading indicator visible.
+
       final List<Movie> movies = await repository.loadMoviesFromAsset();
 
       if (!mounted) {

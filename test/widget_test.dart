@@ -178,10 +178,30 @@ void main() {
       ),
     );
 
+    // Enter a valid address.
+    await tester.enterText(
+      find.byType(TextFormField).at(0),
+      'Portsmouth, UK',
+    );
+
+    // Enter a valid email address.
+    await tester.enterText(
+      find.byType(TextFormField).at(1),
+      'customer@example.com',
+    );
+
+    // Enter a patron number.
+    await tester.enterText(
+      find.byType(TextFormField).at(2),
+      '1234',
+    );
+
+    // Press Save Settings.
     await tester.ensureVisible(find.text('SAVE SETTINGS'));
     await tester.tap(find.text('SAVE SETTINGS'));
     await tester.pumpAndSettle();
 
+    // Check the success message.
     expect(
       find.text('Settings saved successfully'),
       findsOneWidget,

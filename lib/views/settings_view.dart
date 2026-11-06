@@ -15,9 +15,9 @@ class _SettingsViewState extends State<SettingsView> {
 
   final TextEditingController _addressController = TextEditingController();
 
-  final TextEditingController _emailController =TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _patronController =TextEditingController();
+  final TextEditingController _patronController = TextEditingController();
 
   bool _receiveNews = true;
 
@@ -40,13 +40,13 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _cancelSettings() {
-  setState(() {
-    _addressController.clear();
-    _emailController.clear();
-    _patronController.clear();
-    _receiveNews = false;
-  });
-}
+    setState(() {
+      _addressController.clear();
+      _emailController.clear();
+      _patronController.clear();
+      _receiveNews = false;
+    });
+  }
 
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
