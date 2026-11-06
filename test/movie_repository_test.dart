@@ -1,10 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:southsea_cinema/repositories/movie_repository.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('MovieRepository tests', () {
+    test('JSON asset can be read', () async {
+  final String json =
+      await rootBundle.loadString('assets/data/movies.json');
+
+  expect(json, contains('DRACULA (1931)'));
+});
     final repository = MovieRepository();
 
     test('Returns the expected mock films', () {

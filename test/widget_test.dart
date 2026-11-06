@@ -4,8 +4,12 @@ import 'package:southsea_cinema/views/movie_listing.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/views/settings_view.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  setUp(() {
+  rootBundle.clear();
+  });
   testWidgets('Basic app loading test', (WidgetTester tester) async {
     await tester.pumpWidget(const SouthseaCinemaApp());
     await tester.pumpAndSettle();
