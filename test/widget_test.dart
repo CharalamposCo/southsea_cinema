@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 
 void main() {
   setUp(() {
-  rootBundle.clear();
+    rootBundle.clear();
   });
   testWidgets('Basic app loading test', (WidgetTester tester) async {
     await tester.pumpWidget(const SouthseaCinemaApp());
@@ -64,7 +64,7 @@ void main() {
     );
   });
 
-    testWidgets('PrimaryButton displays label and responds to taps',
+  testWidgets('PrimaryButton displays label and responds to taps',
       (WidgetTester tester) async {
     bool buttonPressed = false;
 
@@ -92,7 +92,7 @@ void main() {
     expect(buttonPressed, isTrue);
   });
 
-    testWidgets('Settings page displays all profile fields',
+  testWidgets('Settings page displays all profile fields',
       (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -110,8 +110,7 @@ void main() {
     expect(find.text('CANCEL'), findsOneWidget);
   });
 
-  testWidgets('Address can be cleared',
-      (WidgetTester tester) async {
+  testWidgets('Address can be cleared', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: SettingsView(),
@@ -122,9 +121,12 @@ void main() {
     await tester.pump();
 
     expect(
-      tester.widget<TextFormField>(
-        find.byType(TextFormField).first,
-      ).controller!.text,
+      tester
+          .widget<TextFormField>(
+            find.byType(TextFormField).first,
+          )
+          .controller!
+          .text,
       '',
     );
   });
@@ -185,5 +187,4 @@ void main() {
       findsOneWidget,
     );
   });
-
 }

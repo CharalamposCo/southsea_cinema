@@ -58,8 +58,7 @@ class MovieRepository {
     final List<Movie> loadedMovies = [];
 
     for (final dynamic item in jsonList) {
-      final Map<String, dynamic> itemMap =
-          item as Map<String, dynamic>;
+      final Map<String, dynamic> itemMap = item as Map<String, dynamic>;
 
       final Movie movie = Movie.fromJson(itemMap);
 

@@ -7,11 +7,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   group('MovieRepository tests', () {
     test('JSON asset can be read', () async {
-  final String json =
-      await rootBundle.loadString('assets/data/movies.json');
+      final String json =
+          await rootBundle.loadString('assets/data/movies.json');
 
-  expect(json, contains('DRACULA (1931)'));
-});
+      expect(json, contains('DRACULA (1931)'));
+    });
     final repository = MovieRepository();
 
     test('Returns the expected mock films', () {
@@ -37,11 +37,9 @@ void main() {
     });
 
     test('loadMoviesFromAsset reads the JSON movie catalogue', () async {
-
       final MovieRepository repository = MovieRepository();
 
-      final List<Movie> movies =
-         await repository.loadMoviesFromAsset();
+      final List<Movie> movies = await repository.loadMoviesFromAsset();
 
       expect(movies.length, 2);
 
@@ -54,7 +52,6 @@ void main() {
       expect(movies[1].price, 10.00);
 
       expect(repository.getMovies(), movies);
-  });
-
+    });
   });
 }

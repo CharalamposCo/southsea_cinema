@@ -74,8 +74,7 @@ class _BasketViewState extends State<BasketView> {
                           child: Padding(
                             padding: const EdgeInsets.all(16),
                             child: Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   item.movie.title,
@@ -108,24 +107,21 @@ class _BasketViewState extends State<BasketView> {
                                 Row(
                                   children: [
                                     IconButton(
-                                      onPressed: () =>
-                                          _removeOne(item),
+                                      onPressed: () => _removeOne(item),
                                       icon: const Icon(
                                         Icons.remove,
                                         color: cinemaFontWhite,
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed: () =>
-                                          _addOne(item),
+                                      onPressed: () => _addOne(item),
                                       icon: const Icon(
                                         Icons.add,
                                         color: cinemaFontWhite,
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () =>
-                                          _removeAll(item),
+                                      onPressed: () => _removeAll(item),
                                       child: const Text('Remove'),
                                     ),
                                   ],
@@ -150,15 +146,17 @@ class _BasketViewState extends State<BasketView> {
                   PrimaryButton(
                     label: 'Checkout',
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Checkout coming soon!',
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                     setState(() {
+                      _basketRepository.clearBasket();
+                   });
+
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     const SnackBar(
+                       content: Text('Checkout completed successfully!'),
+                     ),
+                   );
+                  },
+                 ),
                 ],
               ),
       ),

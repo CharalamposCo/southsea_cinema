@@ -110,20 +110,20 @@ class _MovieListingState extends State<MovieListing> {
             PrimaryButton(
               label: 'Add to order',
               onPressed: () {
-               if (_ticketQuantity > 0) {
-                 BasketRepository().addTickets(
-                   widget.movie,
-                   _ticketQuantity,
-                 );
-              }
+                if (_ticketQuantity > 0) {
+                  BasketRepository().addTickets(
+                    widget.movie,
+                    _ticketQuantity,
+                  );
+                }
 
-               ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(
-                   content: Text(
-                    '$_ticketQuantity ticket(s) added to order',
-                   ),
-                 ),
-               );
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      '$_ticketQuantity ticket(s) added to order',
+                    ),
+                  ),
+                );
               },
             ),
           ],

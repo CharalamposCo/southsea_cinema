@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
@@ -14,8 +13,7 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _addressController =
-      TextEditingController(
+  final TextEditingController _addressController = TextEditingController(
     text: 'Buckingham Building,\nLion Terrace,\nPortsmouth\nPO1 3HE',
   );
 
@@ -130,8 +128,7 @@ class _SettingsViewState extends State<SettingsView> {
                 decoration: _inputDecoration('Email Address'),
                 validator: (value) {
                   if (value == null ||
-                      !RegExp(r'^[^@]+@[^@]+\.[^@]+$')
-                          .hasMatch(value)) {
+                      !RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(value)) {
                     return 'Please enter a valid email address';
                   }
                   return null;
@@ -214,7 +211,6 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                     child: const Text('CANCEL'),
                   ),
-
                   PrimaryButton(
                     label: 'SAVE SETTINGS',
                     onPressed: _saveSettings,

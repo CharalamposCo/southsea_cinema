@@ -2,8 +2,7 @@ import '../models/movie.dart';
 import '../models/basket_item.dart';
 
 class BasketRepository {
-  static final BasketRepository _instance =
-      BasketRepository._internal();
+  static final BasketRepository _instance = BasketRepository._internal();
 
   factory BasketRepository() {
     return _instance;
