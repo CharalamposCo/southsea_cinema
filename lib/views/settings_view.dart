@@ -13,15 +13,11 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _addressController = TextEditingController(
-    text: 'Buckingham Building,\nLion Terrace,\nPortsmouth\nPO1 3HE',
-  );
+  final TextEditingController _addressController = TextEditingController();
 
-  final TextEditingController _emailController =
-      TextEditingController(text: 'alex@example.com');
+  final TextEditingController _emailController =TextEditingController();
 
-  final TextEditingController _patronController =
-      TextEditingController(text: '1234');
+  final TextEditingController _patronController =TextEditingController();
 
   bool _receiveNews = true;
 
@@ -44,14 +40,13 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _cancelSettings() {
-    setState(() {
-      _addressController.text =
-          'Buckingham Building,\nLion Terrace,\nPortsmouth\nPO1 3HE';
-      _emailController.text = 'alex@example.com';
-      _patronController.text = '1234';
-      _receiveNews = true;
-    });
-  }
+  setState(() {
+    _addressController.clear();
+    _emailController.clear();
+    _patronController.clear();
+    _receiveNews = false;
+  });
+}
 
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
