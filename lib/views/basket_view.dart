@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
+import 'package:southsea_cinema/database/cinema_db.dart';
 import 'package:southsea_cinema/models/basket_item.dart';
+import 'package:southsea_cinema/models/booking.dart';
 import 'package:southsea_cinema/repositories/basket_repository.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
@@ -14,6 +16,107 @@ class BasketView extends StatefulWidget {
 
 class _BasketViewState extends State<BasketView> {
   final BasketRepository _basketRepository = BasketRepository();
+
+  List<Booking> _bookings = [];
+  bool _loadingBookings = true;
+  String _bookingError = '';
+  String _confirmationMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBookings();
+  }
+
+  Future<void> _loadBookings() async {
+    try {
+      final List<Booking> bookings =
+          await CinemaDatabase.instance.getAllBookings();
+
+      if (!mounted) return;
+
+      setState(() {
+        _bookings = bookings;
+        _loadingBookings = false;
+        _bookingError = '';
+      });
+    } catch (error) {
+      if (!mounted) return;
+
+      setState(() {
+        _loadingBookings = false;
+        _bookingError = 'Could not load bookings: $error';
+      });
+    }
+  }
+
+  String _buildSummary(List<BasketItem> items) {
+    final List<String> parts = [];
+
+    for (final BasketItem item in items) {
+      parts.add('${item.quantity} x ${item.movie.title}');
+    }
+
+    return parts.join(', ');
+  }
+
+  String _formatDate(DateTime now) {
+    final String day = now.day.toString().padLeft(2, '0');
+    final String month = now.month.toString().padLeft(2, '0');
+    final String hour = now.hour.toString().padLeft(2, '0');
+    final String minute = now.minute.toString().padLeft(2, '0');
+
+    return '$day/$month/${now.year} $hour:$minute';
+  }
+
+  Future<void> _checkout() async {
+    final List<BasketItem> items = _basketRepository.getItems();
+
+    if (items.isEmpty) return;
+
+    final String summary = _buildSummary(items);
+    final double total = _basketRepository.getTotal();
+    final String date = _formatDate(DateTime.now());
+
+    try {
+      final CinemaDatabase database = CinemaDatabase.instance;
+
+      final int bookingNumber = await database.getNextBookingNumber();
+
+      final Booking booking = Booking(
+        bookingNumber: bookingNumber,
+        summary: summary,
+        total: total,
+        date: date,
+      );
+
+      await database.insertBooking(booking);
+
+      _basketRepository.clearBasket();
+
+      if (!mounted) return;
+
+      setState(() {
+        _confirmationMessage = 'Booking #$bookingNumber saved';
+      });
+
+      await _loadBookings();
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Booking #$bookingNumber saved successfully!'),
+        ),
+      );
+    } catch (error) {
+      if (!mounted) return;
+
+      setState(() {
+        _confirmationMessage = 'Could not save booking: $error';
+      });
+    }
+  }
 
   void _removeOne(BasketItem item) {
     setState(() {
@@ -36,129 +139,192 @@ class _BasketViewState extends State<BasketView> {
     });
   }
 
+  Widget _buildBookingCard(Booking booking) {
+    return Card(
+      color: const Color(0xFF242033),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Booking #${booking.bookingNumber}',
+              style: const TextStyle(
+                color: cinemaFontWhite,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              booking.summary,
+              style: const TextStyle(color: cinemaFontWhite),
+            ),
+            Text(
+              'Total: £${booking.total.toStringAsFixed(2)}',
+              style: const TextStyle(color: cinemaFontWhite),
+            ),
+            Text(
+              'Date: ${booking.date}',
+              style: const TextStyle(color: cinemaFontWhite),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final items = _basketRepository.getItems();
+    final List<BasketItem> items = _basketRepository.getItems();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Basket'),
       ),
       drawer: const NavDrawer(),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: items.isEmpty
-            ? const Center(
-                child: Text(
-                  'Your basket is empty',
-                  style: TextStyle(
-                    color: cinemaFontWhite,
-                    fontSize: 18,
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Current Basket',
+              style: TextStyle(
+                color: cinemaFontWhite,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (items.isEmpty)
+              const Text(
+                'Your basket is empty',
+                style: TextStyle(
+                  color: cinemaFontWhite,
+                  fontSize: 18,
                 ),
               )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-
-                        return Card(
-                          color: const Color(0xFF242033),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.movie.title,
-                                  style: const TextStyle(
-                                    color: cinemaFontWhite,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Ticket price: ${item.movie.formattedPrice}',
-                                  style: const TextStyle(
-                                    color: cinemaFontWhite,
-                                  ),
-                                ),
-                                Text(
-                                  'Quantity: ${item.quantity}',
-                                  style: const TextStyle(
-                                    color: cinemaFontWhite,
-                                  ),
-                                ),
-                                Text(
-                                  'Subtotal: £${item.totalPrice.toStringAsFixed(2)}',
-                                  style: const TextStyle(
-                                    color: cinemaFontWhite,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => _removeOne(item),
-                                      icon: const Icon(
-                                        Icons.remove,
-                                        color: cinemaFontWhite,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () => _addOne(item),
-                                      icon: const Icon(
-                                        Icons.add,
-                                        color: cinemaFontWhite,
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => _removeAll(item),
-                                      child: const Text('Remove'),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+            else ...[
+              for (final BasketItem item in items)
+                Card(
+                  color: const Color(0xFF242033),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
                   ),
-                  const Divider(),
-                  Text(
-                    'Total: £${_basketRepository.getTotal().toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      color: cinemaFontWhite,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  PrimaryButton(
-                    label: 'Checkout',
-                    onPressed: () {
-                      setState(() {
-                        _basketRepository.clearBasket();
-                      });
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Checkout completed successfully!'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.movie.title,
+                          style: const TextStyle(
+                            color: cinemaFontWhite,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      );
-                    },
+                        const SizedBox(height: 8),
+                        Text(
+                          'Ticket price: ${item.movie.formattedPrice}',
+                          style: const TextStyle(color: cinemaFontWhite),
+                        ),
+                        Text(
+                          'Quantity: ${item.quantity}',
+                          style: const TextStyle(color: cinemaFontWhite),
+                        ),
+                        Text(
+                          'Subtotal: £${item.totalPrice.toStringAsFixed(2)}',
+                          style: const TextStyle(color: cinemaFontWhite),
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () => _removeOne(item),
+                              icon: const Icon(
+                                Icons.remove,
+                                color: cinemaFontWhite,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () => _addOne(item),
+                              icon: const Icon(
+                                Icons.add,
+                                color: cinemaFontWhite,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => _removeAll(item),
+                              child: const Text('Remove'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
+                ),
+              const Divider(),
+              Text(
+                'Total: £${_basketRepository.getTotal().toStringAsFixed(2)}',
+                style: const TextStyle(
+                  color: cinemaFontWhite,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              const SizedBox(height: 16),
+              PrimaryButton(
+                label: 'Checkout',
+                onPressed: _checkout,
+              ),
+            ],
+            if (_confirmationMessage.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                _confirmationMessage,
+                style: const TextStyle(
+                  color: cinemaFontWhite,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+            const SizedBox(height: 28),
+            const Divider(),
+            const SizedBox(height: 12),
+            const Text(
+              'Past Bookings',
+              style: TextStyle(
+                color: cinemaFontWhite,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            if (_loadingBookings)
+              const Center(child: CircularProgressIndicator())
+            else if (_bookingError.isNotEmpty)
+              Text(
+                _bookingError,
+                style: const TextStyle(color: cinemaFontWhite),
+              )
+            else if (_bookings.isEmpty)
+              const Text(
+                'No previous bookings',
+                style: TextStyle(
+                  color: cinemaFontWhite,
+                  fontSize: 16,
+                ),
+              )
+            else
+              for (final Booking booking in _bookings)
+                _buildBookingCard(booking),
+          ],
+        ),
       ),
     );
   }
