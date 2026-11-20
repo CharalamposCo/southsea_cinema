@@ -1,9 +1,38 @@
 import 'package:path/path.dart';
 import 'package:southsea_cinema/models/booking.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:southsea_cinema/models/basket_item.dart';
 
 class CinemaDatabase {
   CinemaDatabase._internal();
+
+  Future<void> createBookingItemsTable(Database db) async {
+  await db.execute('''
+    CREATE TABLE IF NOT EXISTS booking_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      booking_id INTEGER NOT NULL,
+      movie_id TEXT NOT NULL,
+      movie_title TEXT NOT NULL,
+      screening_time TEXT NOT NULL,
+      quantity INTEGER NOT NULL,
+      unit_price REAL NOT NULL,
+      line_total REAL NOT NULL,
+      FOREIGN KEY (booking_id)
+        REFERENCES bookings (id)
+        ON DELETE CASCADE
+    )
+  ''');
+  
+}
+Future<void> _upgradeDB(
+  Database db,
+  int oldVersion,
+  int newVersion,
+) async {
+  if (oldVersion < 2) {
+    await createBookingItemsTable(db);
+  }
+}
 
   static final CinemaDatabase instance = CinemaDatabase._internal();
 
@@ -31,8 +60,9 @@ class CinemaDatabase {
 
     final Database db = await openDatabase(
       filePath,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
+      onUpgrade: _upgradeDB,
     );
 
     return db;
@@ -52,6 +82,7 @@ class CinemaDatabase {
 
   Future<void> _createDB(Database db, int version) async {
     await createTables(db, version);
+    await createBookingItemsTable(db);
 
     await db.insert('bookings', <String, Object?>{
       'booking_number': 1003,
@@ -81,22 +112,64 @@ class CinemaDatabase {
     return id;
   }
 
-  Future<List<Booking>> getAllBookings() async {
-    final Database db = await database;
+  Future<int> insertBookingWithItems(
+  Booking booking,
+  List<BasketItem> items,
+) async {
+  final Database db = await database;
 
-    final List<Map<String, Object?>> records = await db.query(
+  return db.transaction<int>((txn) async {
+    // Save the main booking first.
+    final int bookingId = await txn.insert(
       'bookings',
-      orderBy: 'booking_number DESC',
+      booking.toMap(),
     );
 
-    final List<Booking> bookings = [];
-
-    for (final Map<String, Object?> row in records) {
-      bookings.add(Booking.fromMap(row));
+    // Save each item linked to that booking.
+    for (final BasketItem item in items) {
+      await txn.insert('booking_items', <String, Object?>{
+        'booking_id': bookingId,
+        'movie_id': item.movie.id,
+        'movie_title': item.movie.title,
+        'screening_time': item.movie.screeningTime,
+        'quantity': item.quantity,
+        'unit_price': item.movie.price,
+        'line_total': item.totalPrice,
+      });
     }
 
-    return bookings;
+    return bookingId;
+  });
+}
+
+Future<List<Booking>> getAllBookings() async {
+  final Database db = await database;
+
+  final List<Map<String, Object?>> records = await db.query(
+    'bookings',
+    orderBy: 'booking_number DESC',
+  );
+
+  final List<Booking> bookings = [];
+
+  for (final Map<String, Object?> row in records) {
+    bookings.add(Booking.fromMap(row));
   }
+
+  return bookings;
+}
+
+Future<List<Map<String, Object?>>> getBookingItems(
+  int bookingId,
+) async {
+  final Database db = await database;
+
+  return db.query(
+    'booking_items',
+    where: 'booking_id = ?',
+    whereArgs: [bookingId],
+  );
+}
 
   Future<int> getNextBookingNumber() async {
     final Database db = await database;

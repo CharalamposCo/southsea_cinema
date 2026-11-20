@@ -72,6 +72,6 @@ void main() {
     basketRepository.addTickets(dracula, 2);
     basketRepository.addTickets(fastAndFurious, 1);
 
-    expect(basketRepository.getTotal(), 27.00);
+    expect(basketRepository.getTotal(), 31.00);
   });
 }

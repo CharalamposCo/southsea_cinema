@@ -17,14 +17,16 @@ class BasketRepository {
   }
 
   double getTotal() {
+    if (_items.isEmpty) return 0;
+
     double total = 0;
 
     for (final item in _items) {
       total += item.totalPrice;
     }
 
-    return total;
-  }
+    return total + 4.00;
+}
 
   void addTickets(Movie movie, int quantity) {
     if (quantity <= 0) return;

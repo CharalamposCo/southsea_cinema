@@ -15,6 +15,7 @@ class BasketView extends StatefulWidget {
 }
 
 class _BasketViewState extends State<BasketView> {
+  Map<int, List<Map<String, Object?>>> _bookingItems = {};
   final BasketRepository _basketRepository = BasketRepository();
 
   List<Booking> _bookings = [];
@@ -28,27 +29,39 @@ class _BasketViewState extends State<BasketView> {
     _loadBookings();
   }
 
-  Future<void> _loadBookings() async {
-    try {
-      final List<Booking> bookings =
-          await CinemaDatabase.instance.getAllBookings();
+Future<void> _loadBookings() async {
+  try {
+    final database = CinemaDatabase.instance;
 
-      if (!mounted) return;
+    final List<Booking> bookings = await database.getAllBookings();
 
-      setState(() {
-        _bookings = bookings;
-        _loadingBookings = false;
-        _bookingError = '';
-      });
-    } catch (error) {
-      if (!mounted) return;
+    // Load the individual items belonging to each booking.
+    final Map<int, List<Map<String, Object?>>> bookingItems = {};
 
-      setState(() {
-        _loadingBookings = false;
-        _bookingError = 'Could not load bookings: $error';
-      });
+    for (final booking in bookings) {
+      if (booking.id != null) {
+        bookingItems[booking.id!] =
+            await database.getBookingItems(booking.id!);
+      }
     }
+
+    if (!mounted) return;
+
+    setState(() {
+      _bookings = bookings;
+      _bookingItems = bookingItems;
+      _loadingBookings = false;
+      _bookingError = '';
+    });
+  } catch (error) {
+    if (!mounted) return;
+
+    setState(() {
+      _loadingBookings = false;
+      _bookingError = 'Could not load bookings: $error';
+    });
   }
+}
 
   String _buildSummary(List<BasketItem> items) {
     final List<String> parts = [];
@@ -90,7 +103,7 @@ class _BasketViewState extends State<BasketView> {
         date: date,
       );
 
-      await database.insertBooking(booking);
+      await database.insertBookingWithItems(booking, items);
 
       _basketRepository.clearBasket();
 
@@ -139,43 +152,76 @@ class _BasketViewState extends State<BasketView> {
     });
   }
 
-  Widget _buildBookingCard(Booking booking) {
-    return Card(
-      color: const Color(0xFF242033),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Booking #${booking.bookingNumber}',
-              style: const TextStyle(
-                color: cinemaFontWhite,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+Widget _buildBookingCard(Booking booking) {
+  final List<Map<String, Object?>> items =
+      booking.id == null ? [] : (_bookingItems[booking.id!] ?? []);
+
+  return Card(
+    color: const Color(0xFF242033),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.zero,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Booking #${booking.bookingNumber}',
+            style: const TextStyle(
+              color: cinemaFontWhite,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-            const SizedBox(height: 8),
+          ),
+          const SizedBox(height: 8),
+
+          if (items.isEmpty)
             Text(
               booking.summary,
               style: const TextStyle(color: cinemaFontWhite),
-            ),
-            Text(
-              'Total: £${booking.total.toStringAsFixed(2)}',
-              style: const TextStyle(color: cinemaFontWhite),
-            ),
-            Text(
-              'Date: ${booking.date}',
-              style: const TextStyle(color: cinemaFontWhite),
-            ),
-          ],
-        ),
+            )
+          else
+            for (final item in items) ...[
+              Text(
+                item['movie_title'].toString(),
+                style: const TextStyle(
+                  color: cinemaFontWhite,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                'Screening: ${item['screening_time']}',
+                style: const TextStyle(color: cinemaFontWhite),
+              ),
+              Text(
+                'Quantity: ${item['quantity']}',
+                style: const TextStyle(color: cinemaFontWhite),
+              ),
+              Text(
+                'Ticket price: £${(item['unit_price'] as num).toStringAsFixed(2)}',
+                style: const TextStyle(color: cinemaFontWhite),
+              ),
+              Text(
+                'Subtotal: £${(item['line_total'] as num).toStringAsFixed(2)}',
+                style: const TextStyle(color: cinemaFontWhite),
+              ),
+              const Divider(color: Colors.white24),
+            ],
+
+          Text(
+            'Total: £${booking.total.toStringAsFixed(2)}',
+            style: const TextStyle(color: cinemaFontWhite),
+          ),
+          Text(
+            'Date: ${booking.date}',
+            style: const TextStyle(color: cinemaFontWhite),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
