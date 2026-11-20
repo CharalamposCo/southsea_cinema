@@ -259,6 +259,7 @@ class _BasketViewState extends State<BasketView> {
                               ),
                             ),
                             TextButton(
+                              key: ValueKey('remove_${item.movie.id}'),
                               onPressed: () => _removeAll(item),
                               child: const Text('Remove'),
                             ),
