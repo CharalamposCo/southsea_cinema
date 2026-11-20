@@ -1,14 +1,35 @@
-# Southsea Cinema - Flutter Coursework
+# Southsea Cinema
 
-This repository contains the coursework starter project for students enrolled in the **Programming Applications and Programming Languages (M30235)** and **User Experience Design and Implementation (M32605)** modules at the University of Portsmouth.
+A Flutter mobile application developed as coursework for the Programming Applications and Programming Languages (M30235) and User Experience Design and Implementation (M32605) modules at the University of Portsmouth.
 
 ## Overview
 
-Your task is to recreate a mobile-friendly version of the Southsea Cinema website using Flutter. You must begin by forking this starter repository, then build your own version of the app step by step as you work through the weekly worksheets.
+Southsea Cinema is a mobile-friendly cinema application inspired by the [Southsea Cinema website](https://southseacinema.savoysystems.co.uk/SouthseaCinema.dll/).
 
-Reference website: [Southsea Cinema](https://southseacinema.savoysystems.co.uk/SouthseaCinema.dll/)
+The application allows users to browse cinema movies, add tickets to a basket, complete bookings and view their previous bookings.
 
-The starter app is deliberately minimal. It contains only a basic theme, an empty home page, a small drawer, and a default widget test. You are expected to add screens, widgets, data models, tests, persistence, and cloud services during the coursework.
+The project is developed progressively through the weekly coursework worksheets.
+
+## Features
+
+The application currently includes:
+
+- **Movie listings:** Browse available cinema movies and view their information.
+- **Shopping basket:** Add and remove movie tickets and calculate the total price.
+- **Booking system:** Complete a booking and receive a booking number.
+- **Booking history:** Store and display previous bookings using SQLite.
+- **Settings:** Save customer details and preferences.
+- **Light and dark themes:** Switch between light and dark appearance, with the selected theme saved between app sessions.
+- **Automated tests:** Unit tests and widget tests for the application's main functionality.
+
+## Technologies Used
+
+- Flutter
+- Dart
+- SQLite using `sqflite`
+- Shared Preferences
+- Visual Studio Code
+- Git and GitHub
 
 ## Getting Started
 
@@ -16,41 +37,18 @@ The starter app is deliberately minimal. It contains only a basic theme, an empt
 
 You need:
 
-- A GitHub account
-- A way to edit and run Flutter projects
-- Git installed and connected to your GitHub account
+- A GitHub account.
+- Flutter SDK installed.
+- Dart SDK (included with Flutter).
+- Git installed and connected to your GitHub account.
+- Visual Studio Code or another Flutter-compatible IDE.
+- An Android emulator or compatible device.
 
-Follow the [development environment instructions in Worksheet 1](https://manighahrmani.github.io/sandwich_shop/worksheet-1.html#set-up-your-development-environment). You can use your own device or access the university machines remotely.
+Follow the [development environment instructions in Worksheet 1](https://manighahrmani.github.io/sandwich_shop/worksheet-1.html#set-up-your-development-environment).
 
-### Fork the Repository
+### Clone the Repository
 
-Open this repository on GitHub and click **Fork**, as shown below:
-
-[https://github.com/manighahrmani/southsea_cinema/fork](https://github.com/manighahrmani/southsea_cinema/fork)
-
-![Clicking the Fork button on GitHub](images/step1_fork_button.png)
-
-On the "Create a new fork" page, leave the default options as they are (do not change the repository name) and click **Create fork**:
-
-![Creating a new fork on GitHub](images/step1_create_fork.png)
-
-Your fork should be called `southsea_cinema` and should have a URL like this:
-
-```text
-https://github.com/YOUR-USERNAME/southsea_cinema
-```
-
-### Clone Your Forked Repository
-
-On your forked repository page, click the green **Code** button and copy the HTTPS URL, as shown below:
-
-![Copying the clone URL from GitHub](images/step2_clone_repository.png)
-
-If you are using VS Code, open the Source Control panel and click **Clone Repository** (or open the Command Palette with `Ctrl+Shift+P` / `Cmd+Shift+P` and choose "Git: Clone"), then paste the URL you copied:
-
-![Cloning your fork in VS Code](images/step2_open_in_vscode.png)
-
-Alternatively, if you are using a terminal, run:
+Fork the original repository on GitHub and clone your fork:
 
 ```bash
 git clone https://github.com/YOUR-USERNAME/southsea_cinema.git
@@ -61,103 +59,124 @@ Replace `YOUR-USERNAME` with your GitHub username.
 
 ### Install Dependencies
 
-When you open the project, VS Code may show a popup asking if you want to fetch missing packages. If you see it, click **Run 'pub get'**, as shown below:
-
-![VS Code prompting to run pub get](images/step3_flutter_pub_get_better.png)
-
-If you do not see this popup, open a terminal and run the command manually:
+Open a terminal in the project directory and run:
 
 ```bash
 flutter pub get
 ```
 
-This downloads the Flutter packages needed by the starter app.
-
-![Running flutter pub get in the terminal](images/step3_flutter_pub_get.png)
+This downloads the packages required by the application.
 
 ### Run the Application
 
-This coursework targets Flutter Web. Use Chrome or Edge.
+Start an Android emulator or connect a compatible device, then run:
 
 ```bash
-flutter run -d chrome
+flutter run
 ```
 
-or:
+To see the available devices, use:
 
 ```bash
-flutter run -d edge
+flutter devices
 ```
 
-The app should open in your browser and show the Southsea Cinema starter home page, as shown below:
+### Run Tests
 
-![Starter app running in Chrome](images/step4_run_app.png)
-
-### Use Mobile View
-
-The coursework should be designed mobile-first.
-
-To view it in mobile view in Chrome or Edge, open developer tools (right-click the page and choose **Inspect**, or press F12), then click the **Toggle device toolbar** button:
-
-![Toggle device toolbar button in Chrome DevTools](images/step5_open_devtools.png)
-
-Finally, choose a phone-sized device preset from the dropdown menu:
-
-![Selecting a phone-sized device preset](images/step5_mobile_view.png)
-
-## Marking Criteria
-
-This repository is the starting point for your Southsea Cinema coursework, which is Item 1 of your module and worth 50% of the overall module mark. Item 1 is assessed as a portfolio of five live in-person demos during your timetabled practical session. You build the app progressively by completing the exercises at the end of the weekly worksheets.
-
-Every two worksheets prepare you for one demo (for example, Worksheets 1 and 2 prepare you for Demo 1). Only your best four demo marks count towards Item 1, with each counted demo worth 25% of Item 1 (12.5% of the overall module mark). Each demo is marked on functionality (9%), code quality (8%), and your understanding through two questions about your own code (8%).
-
-Assessment takes place across five two-week demo windows (Weeks 1 and 2, Weeks 3 and 4, Weeks 5 and 6, Weeks 7 and 8, and Weeks 9 and 10). Three rules apply:
-
-- You can perform at most one demo in any demo window.
-- Demos must be completed in order. You cannot skip ahead to a later demo if you have missed an earlier one, because each stage builds on the previous codebase.
-- Missing one demo window carries no mark penalty because only your best four demo marks count. Missing two or more windows reduces the number of demos you can complete.
-
-For the full mark breakdown, the missed-demo rules, and how Extenuating Circumstances affect Item 1, read the [Assessment Guide](https://portdotacdotuk-my.sharepoint.com/:w:/g/personal/mani_ghahremani_port_ac_uk/IQC9nZoNwb2jT40MnFQPZWVvAVdTK2PGBmZ8jPff30RRyPc). The full demo dates and requirements are listed on the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/).
-
-## Submission
-
-You will submit the link to your public forked repository on Moodle before the first demo. You are not submitting a zip file or a copy of the source code.
-
-Make sure your repository is public. Test this by opening your repository link in a private/incognito browser window.
-
-## Demonstration
-
-During each demo, you must be able to run your app and answer questions about your code.
-
-Before attending a demo, check that the app runs from a clean clone:
+To execute all automated tests, run:
 
 ```bash
-flutter pub get
-flutter run -d chrome
+flutter test
+```
+
+To check the project for errors and warnings, run:
+
+```bash
+flutter analyze
 ```
 
 ## Project Structure
 
-The starter repository is intentionally small:
+The project is organised into separate folders to keep the code maintainable and easy to understand.
 
 ```text
 southsea_cinema/
 ├── lib/
-│   ├── constants.dart          # Shared colours, text styles, and app title
-│   ├── main.dart               # Main app and route setup
+│   ├── constants.dart
+│   ├── main.dart
+│   ├── database/
+│   │   └── cinema_db.dart
+│   ├── models/
+│   │   ├── movie.dart
+│   │   └── booking.dart
+│   ├── repositories/
+│   │   ├── basket_repository.dart
+│   │   └── movie_repository.dart
 │   ├── views/
-│   │   ├── home_view.dart      # Starter home page
-│   │   └── movie_listing.dart  # Empty movie listing page
+│   │   ├── home_view.dart
+│   │   ├── basket_view.dart
+│   │   └── settings_view.dart
 │   └── widgets/
-│       └── nav_drawer.dart     # Minimal starter drawer
+│       └── nav_drawer.dart
 ├── test/
-│   └── widget_test.dart        # Basic widget test
-├── pubspec.yaml                # Project dependencies
-└── README.md                   # This file
+│   ├── database/
+│   ├── models/
+│   ├── repositories/
+│   ├── views/
+│   └── widget_test.dart
+├── pubspec.yaml
+└── README.md
 ```
 
-You will add more files and folders as the coursework develops.
+Additional files and folders may be added as the coursework develops.
+
+## Marking Criteria
+
+The Southsea Cinema coursework is Item 1 of the module and is worth 50% of the overall module mark.
+
+Assessment takes place through five live, in-person demonstrations during timetabled practical sessions. Every two worksheets prepare students for one demonstration.
+
+Only the best four demonstration marks count towards Item 1. Each counted demonstration contributes 25% of Item 1.
+
+Each demonstration assesses:
+
+- Functionality (9%).
+- Code quality (8%).
+- Understanding of your own code through two questions (8%).
+
+Demonstrations must be completed in order, and students can complete at most one demonstration during each two-week demonstration window.
+
+For the full mark breakdown, missed-demo rules and Extenuating Circumstances information, read the [Assessment Guide](https://portdotacdotuk-my.sharepoint.com/:w:/g/personal/mani_ghahremani_port_ac_uk/IQC9nZoNwb2jT40MnFQPZWVvAVdTK2PGBmZ8jPff30RRyPc).
+
+The full demonstration dates and requirements are listed on the [Flutter Course homepage](https://manighahrmani.github.io/sandwich_shop/).
+
+## Submission
+
+Submit the link to your public forked GitHub repository on Moodle before the first demonstration.
+
+You do not need to submit a ZIP file or a separate copy of the source code.
+
+Make sure your repository is public and that it can be accessed using a private or incognito browser window.
+
+## Demonstration Preparation
+
+Before attending a demonstration, make sure the application runs correctly from a clean clone.
+
+Run:
+
+```bash
+flutter pub get
+flutter test
+flutter analyze
+flutter run
+```
+
+You should be able to explain the functionality you have implemented and answer questions about your code.
 
 ## Help with Coursework
 
-If you have questions or encounter issues while working on this coursework, use the [Discord guide](https://portdotacdotuk-my.sharepoint.com/:p:/g/personal/mani_ghahremani_port_ac_uk/IQCMJP6IiR_bQoYUMdXJSRDYAWnajEALZYEXFZyrJkHS1QU) to find the dedicated Discord channel and ask for help. Before posting a new question, check the existing posts to see if your question has already been answered. You can also attend your timetabled practical sessions to get face-to-face support from teaching staff.
+If you have questions or encounter problems, use the [Discord guide](https://portdotacdotuk-my.sharepoint.com/:p:/g/personal/mani_ghahremani_port_ac_uk/IQCMJP6IiR_bQoYUMdXJSRDYAWnajEALZYEXFZyrJkHS1QU) to find the dedicated coursework Discord channel.
+
+Before posting a question, check existing discussions to see whether it has already been answered.
+
+You can also attend your timetabled practical sessions to receive support from teaching staff.

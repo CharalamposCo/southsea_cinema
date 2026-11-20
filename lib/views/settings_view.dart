@@ -5,7 +5,14 @@ import '../widgets/nav_drawer.dart';
 import '../widgets/primary_button.dart';
 
 class SettingsView extends StatefulWidget {
-  const SettingsView({super.key});
+  const SettingsView({
+    super.key,
+    this.themeMode = ThemeMode.dark,
+    this.onThemeModeChanged,
+  });
+
+  final ThemeMode themeMode;
+  final ValueChanged<ThemeMode>? onThemeModeChanged;
 
   @override
   State<SettingsView> createState() => _SettingsViewState();
@@ -104,17 +111,21 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   InputDecoration _inputDecoration(String label) {
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final Color borderColor = isDark ? Colors.white24 : Colors.black26;
+
     return InputDecoration(
       labelText: label,
       filled: true,
-      fillColor: cinemaSurface,
-      border: const OutlineInputBorder(
+      fillColor: isDark ? cinemaSurface : Colors.white,
+      border: OutlineInputBorder(
         borderRadius: BorderRadius.zero,
-        borderSide: BorderSide(color: Colors.white24),
+        borderSide: BorderSide(color: borderColor),
       ),
-      enabledBorder: const OutlineInputBorder(
+      enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.zero,
-        borderSide: BorderSide(color: Colors.white24),
+        borderSide: BorderSide(color: borderColor),
       ),
       focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.zero,
@@ -153,10 +164,10 @@ class _SettingsViewState extends State<SettingsView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'My Settings',
                       style: TextStyle(
-                        color: cinemaFontWhite,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
@@ -230,6 +241,26 @@ class _SettingsViewState extends State<SettingsView> {
 
                     const SizedBox(height: 16),
 
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: const Text(
+                        'Dark mode',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      subtitle: const Text(
+                        'Switch between light and dark appearance',
+                      ),
+                      value: widget.themeMode == ThemeMode.dark,
+                      activeThumbColor: cinemaBrand,
+                      onChanged: (bool isDark) {
+                        widget.onThemeModeChanged?.call(
+                          isDark ? ThemeMode.dark : ThemeMode.light,
+                        );
+                      },
+                    ),
+
+                    const SizedBox(height: 16),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -265,8 +296,10 @@ class _SettingsViewState extends State<SettingsView> {
                         ElevatedButton(
                           onPressed: _cancelSettings,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: cinemaSurface,
-                            foregroundColor: cinemaFontWhite,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.surface,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onSurface,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.zero,
                             ),
