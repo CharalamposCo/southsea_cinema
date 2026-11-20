@@ -161,42 +161,42 @@ void main() {
   });
 
   testWidgets('Invalid email address shows validation error',
-    (WidgetTester tester) async {
-  await tester.pumpWidget(
-    const MaterialApp(
-      home: SettingsView(),
-    ),
-  );
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SettingsView(),
+      ),
+    );
 
-  await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
-  // Enter a valid address.
-  await tester.enterText(
-    find.byType(TextFormField).at(0),
-    'Portsmouth, UK',
-  );
+    // Enter a valid address.
+    await tester.enterText(
+      find.byType(TextFormField).at(0),
+      'Portsmouth, UK',
+    );
 
-  // Enter an invalid email address.
-  await tester.enterText(
-    find.byType(TextFormField).at(1),
-    'invalid-email',
-  );
+    // Enter an invalid email address.
+    await tester.enterText(
+      find.byType(TextFormField).at(1),
+      'invalid-email',
+    );
 
-  // Enter a valid patron number.
-  await tester.enterText(
-    find.byType(TextFormField).at(2),
-    '1234',
-  );
+    // Enter a valid patron number.
+    await tester.enterText(
+      find.byType(TextFormField).at(2),
+      '1234',
+    );
 
-  // Press Save.
-  await tester.ensureVisible(find.text('SAVE SETTINGS'));
-  await tester.tap(find.text('SAVE SETTINGS'));
-  await tester.pumpAndSettle();
+    // Press Save.
+    await tester.ensureVisible(find.text('SAVE SETTINGS'));
+    await tester.tap(find.text('SAVE SETTINGS'));
+    await tester.pumpAndSettle();
 
-  // Check the validation message.
-  expect(
-    find.text('Please enter a valid email address'),
-    findsOneWidget,
-  );
-});
+    // Check the validation message.
+    expect(
+      find.text('Please enter a valid email address'),
+      findsOneWidget,
+    );
+  });
 }
